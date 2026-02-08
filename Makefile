@@ -1,13 +1,10 @@
-.PHONY: build test lint clean generate protocol service frontend go-tools
+.PHONY: build test lint clean generate protocol service frontend
 
 build: protocol service frontend
 
 generate: protocol
 
-go-tools:
-	make -C service go-tools
-
-protocol: go-tools
+protocol:
 	make -C protocol build
 
 service: protocol
