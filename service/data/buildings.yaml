@@ -1,0 +1,38 @@
+buildings:
+  - id: wheat_farm
+    name: Wheat Farm
+    icon: game-icons:wheat
+    base_level: 1
+    placement_key: default
+    tick_resources:
+      wheat: 3
+    upgrade_production_factor:
+      wheat: 1.0
+    upgrade_time_factor: 1.3
+    requirements: []
+
+  - id: stone_mine
+    name: Stone Mine
+    icon: game-icons:stone-pile
+    base_level: 1
+    placement_key: default
+    tick_resources:
+      stone: 3
+    upgrade_production_factor:
+      stone: 1.0
+    upgrade_time_factor: 1.3
+    requirements:
+      - building_id: wheat_farm
+        count: 3
+
+  - id: logger
+    name: Logger
+    icon: game-icons:wood-pile
+    base_level: 1
+    placement_key: premium
+    tick_resources:
+      lumber: 3
+    upgrade_production_factor:
+      lumber: 1.0
+    upgrade_time_factor: 1.3
+    requirements: []

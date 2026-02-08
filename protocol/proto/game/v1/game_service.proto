@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package game.v1;
+
+option go_package = "webfarm/gen/game/v1;gamev1";
+
+import "game/v1/player.proto";
+import "game/v1/actions.proto";
+
+// GameService handles player state and actions (place, upgrade, sell).
+service GameService {
+  rpc GetPlayerState(GetPlayerStateRequest) returns (PlayerState);
+  rpc PlaceBuilding(PlaceBuildingRequest) returns (PlaceBuildingResponse);
+  rpc StartUpgrade(StartUpgradeRequest) returns (StartUpgradeResponse);
+  rpc SellResource(SellResourceRequest) returns (SellResourceResponse);
+  rpc BuyResource(BuyResourceRequest) returns (BuyResourceResponse);
+  rpc CancelUpgrade(CancelUpgradeRequest) returns (CancelUpgradeResponse);
+  rpc StartSellBuilding(StartSellBuildingRequest) returns (StartSellBuildingResponse);
+  rpc GetLeaderboard(GetLeaderboardRequest) returns (GetLeaderboardResponse);
+  rpc AngelInvestor(AngelInvestorRequest) returns (AngelInvestorResponse);
+  rpc GetMarketplace(GetMarketplaceRequest) returns (GetMarketplaceResponse);
+  rpc GetResourcePriceHistory(GetResourcePriceHistoryRequest) returns (GetResourcePriceHistoryResponse);
+  rpc PlaceSellOrder(PlaceSellOrderRequest) returns (PlaceSellOrderResponse);
+  rpc PlaceBuyOrder(PlaceBuyOrderRequest) returns (PlaceBuyOrderResponse);
+  rpc FulfillSellOrder(FulfillSellOrderRequest) returns (FulfillSellOrderResponse);
+  rpc FulfillBuyOrder(FulfillBuyOrderRequest) returns (FulfillBuyOrderResponse);
+  rpc CancelOrder(CancelOrderRequest) returns (CancelOrderResponse);
+  rpc GetOrder(GetOrderRequest) returns (GetOrderResponse);
+  rpc GetLoans(GetLoansRequest) returns (GetLoansResponse);
+  rpc TakeLoan(TakeLoanRequest) returns (TakeLoanResponse);
+  rpc PayOffLoan(PayOffLoanRequest) returns (PayOffLoanResponse);
+  rpc GetMessages(GetMessagesRequest) returns (GetMessagesResponse);
+}
+
+message GetPlayerStateRequest {}

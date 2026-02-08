@@ -1,0 +1,33 @@
+# Runtime / persisted state (may contain user data)
+service/state.yml
+**/state.yml
+
+# Local config that may contain secrets (avoid config yaml in source control)
+config.yaml
+config.yml
+**/config.yaml
+**/config.yml
+.env
+.env.*
+!.env.example
+
+# Binaries and build artifacts
+service/bin/
+service/webfarm
+service/tmp/
+frontend/node_modules/
+frontend/dist/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# IDE and OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

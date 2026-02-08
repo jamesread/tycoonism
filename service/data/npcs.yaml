@@ -1,0 +1,161 @@
+npcs:
+  - name: Alice
+    wealth: 47
+    risk: 23
+    resources:
+      - resource_type: wheat
+        buy_eagerness: 82
+        sell_eagerness: 19
+        max_capacity: 240
+      - resource_type: stone
+        buy_eagerness: 55
+        sell_eagerness: 61
+        max_capacity: 180
+      - resource_type: lumber
+        buy_eagerness: 33
+        sell_eagerness: 74
+        max_capacity: 120
+  - name: Bob
+    wealth: 91
+    risk: 67
+    resources:
+      - resource_type: wheat
+        buy_eagerness: 12
+        sell_eagerness: 88
+        max_capacity: 290
+      - resource_type: stone
+        buy_eagerness: 71
+        sell_eagerness: 44
+        max_capacity: 95
+      - resource_type: lumber
+        buy_eagerness: 56
+        sell_eagerness: 39
+        max_capacity: 210
+  - name: Charles
+    wealth: 18
+    risk: 94
+    resources:
+      - resource_type: wheat
+        buy_eagerness: 64
+        sell_eagerness: 51
+        max_capacity: 165
+      - resource_type: stone
+        buy_eagerness: 29
+        sell_eagerness: 77
+        max_capacity: 275
+      - resource_type: lumber
+        buy_eagerness: 93
+        sell_eagerness: 8
+        max_capacity: 140
+  - name: Dave
+    wealth: 73
+    risk: 41
+    resources:
+      - resource_type: wheat
+        buy_eagerness: 38
+        sell_eagerness: 62
+        max_capacity: 200
+      - resource_type: stone
+        buy_eagerness: 85
+        sell_eagerness: 26
+        max_capacity: 155
+      - resource_type: lumber
+        buy_eagerness: 17
+        sell_eagerness: 91
+        max_capacity: 230
+  - name: Ellodie
+    wealth: 52
+    risk: 59
+    resources:
+      - resource_type: wheat
+        buy_eagerness: 46
+        sell_eagerness: 53
+        max_capacity: 110
+      - resource_type: stone
+        buy_eagerness: 78
+        sell_eagerness: 31
+        max_capacity: 265
+      - resource_type: lumber
+        buy_eagerness: 21
+        sell_eagerness: 82
+        max_capacity: 185
+  - name: Francene
+    wealth: 36
+    risk: 12
+    resources:
+      - resource_type: wheat
+        buy_eagerness: 69
+        sell_eagerness: 37
+        max_capacity: 250
+      - resource_type: stone
+        buy_eagerness: 44
+        sell_eagerness: 66
+        max_capacity: 130
+      - resource_type: lumber
+        buy_eagerness: 95
+        sell_eagerness: 14
+        max_capacity: 175
+  - name: Gabby
+    wealth: 84
+    risk: 78
+    resources:
+      - resource_type: wheat
+        buy_eagerness: 27
+        sell_eagerness: 73
+        max_capacity: 145
+      - resource_type: stone
+        buy_eagerness: 61
+        sell_eagerness: 48
+        max_capacity: 220
+      - resource_type: lumber
+        buy_eagerness: 52
+        sell_eagerness: 59
+        max_capacity: 195
+  - name: Howard
+    wealth: 5
+    risk: 86
+    resources:
+      - resource_type: wheat
+        buy_eagerness: 88
+        sell_eagerness: 22
+        max_capacity: 280
+      - resource_type: stone
+        buy_eagerness: 15
+        sell_eagerness: 94
+        max_capacity: 105
+      - resource_type: lumber
+        buy_eagerness: 41
+        sell_eagerness: 68
+        max_capacity: 160
+  - name: Immogen
+    wealth: 61
+    risk: 33
+    resources:
+      - resource_type: wheat
+        buy_eagerness: 59
+        sell_eagerness: 42
+        max_capacity: 190
+      - resource_type: stone
+        buy_eagerness: 24
+        sell_eagerness: 85
+        max_capacity: 235
+      - resource_type: lumber
+        buy_eagerness: 77
+        sell_eagerness: 36
+        max_capacity: 125
+  - name: Jane
+    wealth: 29
+    risk: 55
+    resources:
+      - resource_type: wheat
+        buy_eagerness: 43
+        sell_eagerness: 71
+        max_capacity: 170
+      - resource_type: stone
+        buy_eagerness: 96
+        sell_eagerness: 11
+        max_capacity: 205
+      - resource_type: lumber
+        buy_eagerness: 68
+        sell_eagerness: 49
+        max_capacity: 255

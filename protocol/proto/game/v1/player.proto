@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package game.v1;
+
+option go_package = "webfarm/gen/game/v1;gamev1";
+
+// Building is a single cell occupant: type_id, level, and optional upgrade/selling completion time.
+message Building {
+  int32 cell_x = 1;
+  int32 cell_y = 2;
+  string type_id = 3;  // References building definition id
+  int32 level = 4;              // 1 to max_level
+  int64 upgrade_finishes_at = 5;  // Unix timestamp; 0 if not upgrading
+  int64 selling_finishes_at = 6;  // Unix timestamp; 0 if not selling
+}
+
+// PlayerState is the full player view: coins, resources, and grid.
+message PlayerState {
+  string player_id = 1;
+  int64 coins = 2;
+  map<string, int64> resources = 3;           // resource_id -> quantity
+  repeated Building grid = 4;               // All placed buildings (empty cells omitted)
+  map<string, int64> resources_per_min = 5;  // resource_id -> rate per minute from buildings
+  repeated string sell_order_ids = 6;        // UUIDs of this player's open sell orders
+  repeated string buy_order_ids = 7;        // UUIDs of this player's open buy orders
+}

@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package game.v1;
+
+option go_package = "webfarm/gen/game/v1;gamev1";
+
+import "game/v1/world.proto";
+
+// WorldService exposes the current world/simulation state and app bootstrap.
+service WorldService {
+  // Init returns bootstrap data (e.g. configured auth providers). Call on page load.
+  rpc Init(InitRequest) returns (InitResponse);
+  // GetWorldState returns current day, cycle, and next tick time.
+  rpc GetWorldState(GetWorldStateRequest) returns (WorldState);
+}
+
+message InitRequest {}
+
+message GetWorldStateRequest {}

@@ -1,0 +1,261 @@
+syntax = "proto3";
+
+package game.v1;
+
+option go_package = "webfarm/gen/game/v1;gamev1";
+
+import "game/v1/player.proto";
+
+// PlaceBuildingRequest places a new building at the given cell.
+message PlaceBuildingRequest {
+  string building_type_id = 1;  // References building definition id
+  int32 cell_x = 2;
+  int32 cell_y = 3;
+}
+
+// PlaceBuildingResponse returns updated player state or error.
+message PlaceBuildingResponse {
+  PlayerState state = 1;
+}
+
+// StartUpgradeRequest starts an upgrade for the building at the given cell.
+message StartUpgradeRequest {
+  int32 cell_x = 1;
+  int32 cell_y = 2;
+}
+
+// StartUpgradeResponse returns updated player state or error.
+message StartUpgradeResponse {
+  PlayerState state = 1;
+}
+
+// SellResourceRequest sells a quantity of a resource (or all) for coins.
+message SellResourceRequest {
+  string resource_id = 1;  // References resource definition id
+  int64 quantity = 2;      // 0 = sell all of that resource
+}
+
+// SellResourceResponse returns updated player state.
+message SellResourceResponse {
+  PlayerState state = 1;
+}
+
+// BuyResourceRequest buys a quantity of a resource for coins (import).
+message BuyResourceRequest {
+  string resource_id = 1;
+  int64 quantity = 2;
+}
+
+// BuyResourceResponse returns updated player state.
+message BuyResourceResponse {
+  PlayerState state = 1;
+}
+
+// CancelUpgradeRequest cancels an in-progress upgrade at the given cell.
+message CancelUpgradeRequest {
+  int32 cell_x = 1;
+  int32 cell_y = 2;
+}
+
+// CancelUpgradeResponse returns updated player state.
+message CancelUpgradeResponse {
+  PlayerState state = 1;
+}
+
+// StartSellBuildingRequest starts selling the building at the given cell.
+// Selling takes 30% of the total upgrade time to reach that level; when done, the building is removed and player receives a refund.
+message StartSellBuildingRequest {
+  int32 cell_x = 1;
+  int32 cell_y = 2;
+}
+
+// StartSellBuildingResponse returns updated player state (building will show selling_finishes_at until complete).
+message StartSellBuildingResponse {
+  PlayerState state = 1;
+}
+
+// AngelInvestorRequest requests a one-time grant when the player has no coins and no buildings.
+message AngelInvestorRequest {}
+
+// AngelInvestorResponse returns updated player state after the grant (or error if not eligible).
+message AngelInvestorResponse {
+  PlayerState state = 1;
+}
+
+// GetLeaderboardRequest requests the list of players and their coin totals.
+message GetLeaderboardRequest {}
+
+// LeaderboardEntry is a single row: player id and coins.
+message LeaderboardEntry {
+  string player_id = 1;
+  int64 coins = 2;
+}
+
+// GetLeaderboardResponse returns entries sorted by coins descending.
+message GetLeaderboardResponse {
+  repeated LeaderboardEntry entries = 1;
+}
+
+// OrderType is sell (player offers resource) or buy (player offers coins).
+enum OrderType {
+  ORDER_TYPE_UNSPECIFIED = 0;
+  ORDER_TYPE_SELL = 1;
+  ORDER_TYPE_BUY = 2;
+}
+
+// MarketOrder is a single open order on the marketplace.
+message MarketOrder {
+  string order_id = 1;
+  string player_id = 2;       // who placed the order
+  OrderType order_type = 3;   // SELL or BUY
+  string resource_id = 4;
+  int64 quantity = 5;
+  int64 price_per_unit = 6;   // coins per unit
+  int64 created_at = 7;       // Unix timestamp
+}
+
+// GetMarketplaceRequest optionally filters by resource.
+message GetMarketplaceRequest {
+  string resource_id = 1;  // empty = all resources
+}
+
+// GetMarketplaceResponse returns open sell and buy orders.
+message GetMarketplaceResponse {
+  repeated MarketOrder sell_orders = 1;
+  repeated MarketOrder buy_orders = 2;
+}
+
+// GetResourcePriceHistoryRequest requests the last N tick prices for a resource.
+message GetResourcePriceHistoryRequest {
+  string resource_id = 1;
+  int32 ticks = 2;  // number of ticks to return (e.g. 15); server may return fewer
+}
+
+// GetResourcePriceHistoryResponse returns prices oldest-first (index 0 = oldest).
+message GetResourcePriceHistoryResponse {
+  repeated int64 price_history = 1;
+}
+
+// GameMessage is one entry in the activity/message stream (oldest first).
+message GameMessage {
+  string id = 1;
+  string text = 2;
+  int64 at = 3;   // Unix timestamp (seconds)
+}
+
+// GetMessagesRequest requests the activity/message stream.
+message GetMessagesRequest {}
+
+// GetMessagesResponse returns messages oldest-first (most recent at end).
+message GetMessagesResponse {
+  repeated GameMessage messages = 1;
+}
+
+// PlaceSellOrderRequest places a sell order (resource is reserved until fulfilled or cancelled).
+message PlaceSellOrderRequest {
+  string resource_id = 1;
+  int64 quantity = 2;
+  int64 price_per_unit = 3;
+}
+
+// PlaceSellOrderResponse returns updated player state.
+message PlaceSellOrderResponse {
+  PlayerState state = 1;
+  string order_id = 2;
+}
+
+// PlaceBuyOrderRequest places a buy order (coins are reserved until fulfilled or cancelled).
+message PlaceBuyOrderRequest {
+  string resource_id = 1;
+  int64 quantity = 2;
+  int64 price_per_unit = 3;
+}
+
+// PlaceBuyOrderResponse returns updated player state.
+message PlaceBuyOrderResponse {
+  PlayerState state = 1;
+  string order_id = 2;
+}
+
+// FulfillSellOrderRequest: the caller buys from this sell order (pays coins, receives resource).
+message FulfillSellOrderRequest {
+  string order_id = 1;
+}
+
+// FulfillSellOrderResponse returns updated player state.
+message FulfillSellOrderResponse {
+  PlayerState state = 1;
+}
+
+// FulfillBuyOrderRequest: the caller sells to this buy order (gives resource, receives coins).
+message FulfillBuyOrderRequest {
+  string order_id = 1;
+}
+
+// FulfillBuyOrderResponse returns updated player state.
+message FulfillBuyOrderResponse {
+  PlayerState state = 1;
+}
+
+// CancelOrderRequest cancels the caller's order (refunds resource or coins).
+message CancelOrderRequest {
+  string order_id = 1;
+}
+
+// CancelOrderResponse returns updated player state.
+message CancelOrderResponse {
+  PlayerState state = 1;
+}
+
+// GetOrderRequest fetches order details by UUID.
+message GetOrderRequest {
+  string order_id = 1;  // UUID of the order
+}
+
+// GetOrderResponse returns order details (type, resource, unit price, quantity, total cost).
+message GetOrderResponse {
+  OrderType order_type = 1;   // SELL or BUY
+  string resource_id = 2;
+  int64 price_per_unit = 3;   // coins per unit
+  int64 quantity = 4;
+  int64 total_cost = 5;       // quantity * price_per_unit
+}
+
+// Loan is a player's debt to the bank. Interest is added to balance each tick.
+message Loan {
+  string loan_id = 1;
+  int64 balance = 2;            // remaining amount owed (coins)
+  double interest_rate = 3;     // per tick (e.g. 0.01 = 1%); interest is added to balance
+  int64 created_at = 4;         // Unix timestamp
+  int64 original_amount = 5;    // amount originally borrowed (coins)
+}
+
+// GetLoansRequest requests the player's loans and the loan amounts the bank offers.
+message GetLoansRequest {}
+
+// GetLoansResponse returns current loans and offered loan amounts (proportionate to coins, rounded to 1000).
+message GetLoansResponse {
+  repeated Loan loans = 1;
+  repeated int64 offered_amounts = 2;  // up to 3 amounts the player can borrow
+}
+
+// TakeLoanRequest takes a new loan of the given amount (must be one of the offered amounts).
+message TakeLoanRequest {
+  int64 amount = 1;
+}
+
+// TakeLoanResponse returns updated player state.
+message TakeLoanResponse {
+  PlayerState state = 1;
+}
+
+// PayOffLoanRequest pays amount toward the given loan.
+message PayOffLoanRequest {
+  string loan_id = 1;
+  int64 amount = 2;
+}
+
+// PayOffLoanResponse returns updated player state.
+message PayOffLoanResponse {
+  PlayerState state = 1;
+}

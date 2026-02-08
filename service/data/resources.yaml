@@ -1,0 +1,13 @@
+resources:
+  - id: wheat
+    name: Wheat
+    icon: game-icons:wheat
+    base_color: "#c4a035"
+  - id: stone
+    name: Stone
+    icon: game-icons:stone-pile
+    base_color: "#8b8b8b"
+  - id: lumber
+    name: Lumber
+    icon: game-icons:wood-pile
+    base_color: "#1b5e20"

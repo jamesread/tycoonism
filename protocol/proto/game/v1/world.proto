@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package game.v1;
+
+option go_package = "webfarm/gen/game/v1;gamev1";
+
+// ResourceDef describes a resource for display, selling, and buying.
+// Prices are dynamic (supply/demand). sell_price and buy_price are the current market price (same value).
+message ResourceDef {
+  string id = 1;
+  string name = 2;
+  string icon = 3;  // Iconify icon name
+  int64 sell_price = 4;   // current market price (dynamic)
+  int64 buy_price = 5;   // current market price (same as sell_price)
+  string base_color = 6; // CSS color for UI (e.g. button background); border is computed darker
+  // Average per-tick price change (fractional, e.g. 0.01 = 1% up), over last 3, 10, 50 ticks.
+  double price_change_avg_3_tick = 7;
+  double price_change_avg_10_tick = 8;
+  double price_change_avg_50_tick = 9;
+}
+
+// BuildingRequirement is a prerequisite to place a building.
+message BuildingRequirement {
+  string building_id = 1;
+  int32 count = 2;
+}
+
+// BuildingDef describes a building type for display and placement.
+message BuildingDef {
+  string id = 1;
+  string name = 2;
+  string icon = 3;  // Iconify icon name
+  int32 base_level = 4;
+  map<string, int64> tick_resources = 5;            // resource_id -> amount per tick at base level
+  map<string, double> upgrade_production_factor = 6; // resource_id -> multiplier per level
+  double upgrade_time_factor = 7;
+  repeated BuildingRequirement requirements = 8;
+  int64 placement_cost = 9;  // coin cost to place this building type (from placement_key lookup)
+}
+
+// AuthProvider describes a configured authentication provider (e.g. OAuth).
+message AuthProvider {
+  string id = 1;    // provider key (e.g. "google", "github")
+  string name = 2;  // display name
+}
+
+// InitResponse is returned by Init and provides app bootstrap data.
+message InitResponse {
+  repeated AuthProvider authentication_providers = 1;
+  string username = 2;  // current authenticated user; empty if not authenticated
+  bool local_login_enabled = 3;  // when true, username/password login is available at POST /login
+}
+
+// WorldState is the shared simulation state (current day, cycle, next tick).
+message WorldState {
+  int32 current_day = 1;   // 1-7
+  int64 cycle_id = 2;
+  int64 next_tick_at = 3;  // Unix timestamp; 0 if not set
+  int64 tick_interval_seconds = 4;  // For computing per-building rate/min
+  int64 placement_cost = 5;  // Building value; upgrade cost = 70% of this * 1.30^(toLevel-2)
+  repeated ResourceDef resource_definitions = 6;
+  repeated BuildingDef building_definitions = 7;
+  int64 world_ends_at = 8;  // Unix timestamp when the game world finishes; 0 = no end
+  int64 server_time_unix = 9;  // Server's current time (Unix seconds); use for countdown to avoid client clock skew
+}
