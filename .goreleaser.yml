@@ -1,0 +1,39 @@
+project_name: webfarm
+version: 2
+
+before:
+  hooks:
+    - make -w protocol
+    - make -w frontend
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    binary: server
+    main: main.go
+    dir: service
+    goos:
+      - linux
+    goarch:
+      - amd64
+    ldflags:
+      - -s -w
+
+snapshot:
+  version_template: "{{ .Branch }}-{{ .ShortCommit }}"
+
+dockers:
+  - image_templates:
+      - "ghcr.io/{{ .Repo.Owner }}/webfarm:{{ .Tag }}-amd64"
+      - "ghcr.io/{{ .Repo.Owner }}/webfarm:latest-amd64"
+    dockerfile: Dockerfile
+    goos: linux
+    goarch: amd64
+    skip_push: false
+    build_flag_templates:
+      - "--platform=linux/amd64"
+      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
+      - "--label=org.opencontainers.image.version={{ .Tag }}"
+    extra_files:
+      - frontend/dist
+      - service/data

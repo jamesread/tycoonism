@@ -1,0 +1,79 @@
+---
+name: "Build & Release pipeline"
+
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+    tags:
+      - '*'
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'service/go.mod'
+          cache: true
+          cache-dependency-path: 'service/go.mod'
+
+      - name: Print go version
+        run: go version
+
+      - name: Build frontend
+        run: make -w frontend
+
+      - name: Unit tests
+        run: make -w test
+
+      - name: Build service
+        run: make -w service
+
+      - name: Login to ghcr
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get date
+        run: |
+          echo "DATE=$(date +'%Y-%m-%d')" >> "$GITHUB_ENV"
+
+      - name: Install goreleaser
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          install-only: true
+
+      - name: Run goreleaser (release)
+        if: startsWith(github.ref, 'refs/tags/')
+        run: goreleaser release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run goreleaser (snapshot)
+        if: "!startsWith(github.ref, 'refs/tags/')"
+        run: goreleaser release --snapshot --clean
+
+      - name: Archive binaries
+        if: "!startsWith(github.ref, 'refs/tags/')"
+        uses: actions/upload-artifact@v4
+        with:
+          name: "webfarm-snapshot-${{ env.DATE }}-${{ github.sha }}"
+          path: dist/*

@@ -6,3 +6,10 @@
 
 <script setup>
 </script>
+
+<style>
+.router-link-exact-active {
+  font-weight: 600;
+  text-decoration: underline;
+}
+</style>
