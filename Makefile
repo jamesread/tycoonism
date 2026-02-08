@@ -5,6 +5,7 @@ build: protocol service frontend
 generate: protocol
 
 protocol:
+	go install "github.com/bufbuild/buf/cmd/buf@latest"
 	make -C protocol build
 
 service: protocol
