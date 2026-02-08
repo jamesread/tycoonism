@@ -11,7 +11,7 @@ service: protocol
 	make -C service build
 
 frontend:
-	make -wC frontend build
+	make -wC frontend install build
 
 test: protocol
 	make -C service test
