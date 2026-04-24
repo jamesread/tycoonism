@@ -10,12 +10,12 @@
   },
   "dependencies": {
     "@iconify/vue": "^5.0.0",
-    "picocrank": "^1.13.1",
-    "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
+    "picocrank": "^1.14.1",
+    "vue": "^3.5.33",
+    "vue-router": "^5.0.6"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.2.1",
-    "vite": "^6.0.3"
+    "@vitejs/plugin-vue": "^6.0.6",
+    "vite": "^8.0.10"
   }
 }
