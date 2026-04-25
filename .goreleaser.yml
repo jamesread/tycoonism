@@ -24,8 +24,8 @@ snapshot:
 
 dockers:
   - image_templates:
-      - "ghcr.io/{{ .Repo.Owner }}/webfarm:{{ .Tag }}-amd64"
-      - "ghcr.io/{{ .Repo.Owner }}/webfarm:latest-amd64"
+      - 'ghcr.io/{{ envOrDefault "GITHUB_REPOSITORY_OWNER" "jamesread" }}/webfarm:{{ .Tag }}-amd64'
+      - 'ghcr.io/{{ envOrDefault "GITHUB_REPOSITORY_OWNER" "jamesread" }}/webfarm:latest-amd64'
     dockerfile: Dockerfile
     goos: linux
     goarch: amd64
