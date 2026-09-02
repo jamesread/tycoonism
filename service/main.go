@@ -28,6 +28,7 @@ import (
 )
 
 func main() {
+	configDir := flag.String("configdir", "", "directory containing config.yaml")
 	hashPassword := flag.String("hashpassword", "", "hash a password for auth.localUsers (output is Argon2id hash for config)")
 	flag.Parse()
 	if *hashPassword != "" {
@@ -40,14 +41,15 @@ func main() {
 		os.Exit(0)
 	}
 
+	if *configDir != "" {
+		config.SetConfigDir(*configDir)
+	}
+
 	log := logrus.New()
 	log.SetLevel(logrus.InfoLevel)
 
 	k := koanf.New(".")
-	var configPath string
-	if dir, err := os.UserHomeDir(); err == nil {
-		configPath = filepath.Join(dir, ".config", "wf", "config.yaml")
-	}
+	configPath := config.GetConfigPath()
 	configFileLoaded := false
 	if configPath != "" {
 		if _, err := os.Stat(configPath); err != nil {
@@ -136,16 +138,17 @@ func main() {
 	go runSimulation(ctx, str, cfg, log)
 	go runStateBackup(ctx, str, cfg, log)
 
+	listenAddr := config.ListenAddr(cfg)
 	srv := &http.Server{
-		Addr:    cfg.ListenAddr,
+		Addr:    listenAddr,
 		Handler: handler,
 	}
 	go func() {
-		_, port, _ := net.SplitHostPort(cfg.ListenAddr)
+		_, port, _ := net.SplitHostPort(listenAddr)
 		if port == "" {
-			port = cfg.ListenAddr
+			port = listenAddr
 		}
-		log.WithField("addr", cfg.ListenAddr).WithField("port", port).Info("listening")
+		log.WithField("addr", listenAddr).WithField("port", port).Info("listening")
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.WithError(err).Fatal("server exited")
 		}

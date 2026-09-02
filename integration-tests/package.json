@@ -1,0 +1,14 @@
+{
+  "name": "tycoonism-integration-tests",
+  "private": true,
+  "type": "module",
+  "description": "Integration tests for Tycoonism's web UI.",
+  "scripts": {
+    "test:run": "node run-tests.js"
+  },
+  "devDependencies": {
+    "mocha": "^12.0.0",
+    "selenium-webdriver": "^4.48.0",
+    "wait-on": "^9.1.0"
+  }
+}

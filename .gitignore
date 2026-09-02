@@ -7,6 +7,7 @@ config.yaml
 config.yml
 **/config.yaml
 **/config.yml
+!integration-tests/tests/config.yaml
 .env
 .env.*
 !.env.example
@@ -17,6 +18,9 @@ service/webfarm
 service/tmp/
 frontend/node_modules/
 frontend/dist/
+integration-tests/node_modules/
+integration-tests/tests/state.yml
+integration-tests/tests/.auth/
 *.exe
 *.dll
 *.so

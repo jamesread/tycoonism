@@ -2,7 +2,10 @@ package config
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 	"sort"
+	"strings"
 	"time"
 
 	"github.com/jamesread/httpauthshim/authpublic"
@@ -42,6 +45,41 @@ const (
 	DefaultLoanInterestRate    = 0.01  // 1% per tick
 	DefaultLoanMaxCount        = 3
 )
+
+var overrideDir string
+
+func SetConfigDir(dir string) {
+	overrideDir = dir
+}
+
+func GetConfigPath() string {
+	if overrideDir != "" {
+		return filepath.Join(overrideDir, "config.yaml")
+	}
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return ""
+	}
+	return filepath.Join(home, ".config", "wf", "config.yaml")
+}
+
+// ListenAddr returns the bind address: $PORT if set, otherwise cfg.ListenAddr (default :4838).
+func ListenAddr(cfg *Config) string {
+	if port := strings.TrimSpace(os.Getenv("PORT")); port != "" {
+		return normalizePort(port)
+	}
+	if cfg != nil && cfg.ListenAddr != "" {
+		return cfg.ListenAddr
+	}
+	return DefaultListenAddr
+}
+
+func normalizePort(port string) string {
+	if strings.Contains(port, ":") {
+		return port
+	}
+	return ":" + port
+}
 
 type Config struct {
 	TickInterval        time.Duration

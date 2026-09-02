@@ -1,4 +1,4 @@
-.PHONY: build test lint clean generate protocol service frontend
+.PHONY: build test lint clean generate protocol service frontend integration-test
 
 build: protocol service frontend
 
@@ -19,6 +19,9 @@ test: protocol
 
 lint: protocol
 	make -C service lint
+
+integration-test: build
+	make -wC integration-tests
 
 clean:
 	make -C protocol clean 2>/dev/null || true

@@ -1,0 +1,28 @@
+server:
+  listen_addr: ":18080"
+  static_dir: "../frontend/dist"
+
+state:
+  file: "../integration-tests/tests/state.yml"
+  backup_interval: 1h
+
+simulation:
+  tick_interval: 10s
+
+game:
+  starting_coins: 1000
+  placement_cost: 10
+
+data:
+  resources_file: "data/resources.yaml"
+  buildings_file: "data/buildings.yaml"
+  npcs_file: "data/npcs.yaml"
+
+auth:
+  baseDir: "../integration-tests/tests/.auth"
+  localUsers:
+    enabled: true
+    users:
+      - username: testuser
+        usergroup: player
+        password: "$argon2id$v=19$m=65536,t=4,p=6$EKJAlarbO0ICGyEU75RL1A$ENpitqtusVkEKr0OL7b6GuL5cErQ391q97uBsHvDy3M"

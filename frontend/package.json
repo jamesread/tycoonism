@@ -9,13 +9,13 @@
     "preview": "npx vite preview"
   },
   "dependencies": {
-    "@iconify/vue": "^5.0.0",
-    "picocrank": "^1.14.1",
-    "vue": "^3.5.33",
-    "vue-router": "^5.0.6"
+    "@iconify/vue": "^5.0.1",
+    "picocrank": "^1.28.0",
+    "vue": "^3.5.42",
+    "vue-router": "^5.3.1"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^6.0.6",
-    "vite": "^8.0.10"
+    "@vitejs/plugin-vue": "^6.0.8",
+    "vite": "^8.2.2"
   }
 }
